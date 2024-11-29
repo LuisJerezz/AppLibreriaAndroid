@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryColorDark</item>
+        <item name="colorAccent">@color/accentColor</item>
+    </style>
+
+    <style name="GradientBackground">
+        <item name="android:background">@drawable/background_gradient</item>
+    </style>
+
+    <style name="RoundedButton">
+        <item name="android:backgroundTint">@color/buttonColor</item>
+        <item name="android:textColor">@color/buttonTextColor</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/padding_medium</item>
+        <item name="android:padding">@dimen/padding_medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:elevation">@dimen/elevation</item>
+
+    </style>
+
+
+    <style name="CardStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+
+</resources>
+
