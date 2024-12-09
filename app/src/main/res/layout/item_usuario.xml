@@ -49,6 +49,17 @@
             android:backgroundTint="#2F69FF"
             android:textColor="@android:color/white"
             android:layout_gravity="center_vertical" />
+
+        <Button
+            android:id="@+id/btnEditar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Editar"
+            android:backgroundTint="#FF8C00"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

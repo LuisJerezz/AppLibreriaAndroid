@@ -2,7 +2,7 @@ package com.example.proyectoandroid.models
 
 data class Usuario(
     val id: Int,
-    val nombre: String,
-    val email: String
+    var nombre: String,
+    var email: String
 )
 

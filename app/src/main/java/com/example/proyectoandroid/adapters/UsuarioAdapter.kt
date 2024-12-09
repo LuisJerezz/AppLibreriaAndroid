@@ -10,13 +10,16 @@ import com.example.proyectoandroid.R
 import com.example.proyectoandroid.models.Usuario
 
 class UsuarioAdapter(
-    private var usuarios: MutableList<Usuario>
+    private var usuarios: MutableList<Usuario>,
+    private val onEditClick: (Usuario, Int) -> Unit,
+    private val onDeleteClick: (Int) -> Unit
 ) : RecyclerView.Adapter<UsuarioAdapter.UsuarioViewHolder>() {
 
     class UsuarioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nombre: TextView = itemView.findViewById(R.id.tvNombre)
         val email: TextView = itemView.findViewById(R.id.tvEmail)
         val btnEliminar: Button = itemView.findViewById(R.id.btnEliminar)
+        val btnEditar: Button = itemView.findViewById(R.id.btnEditar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsuarioViewHolder {
@@ -30,18 +33,9 @@ class UsuarioAdapter(
         holder.nombre.text = usuario.nombre
         holder.email.text = usuario.email
 
-        // Acción al hacer clic en "Eliminar"
-        holder.btnEliminar.setOnClickListener {
-            // Elimina el usuario de la lista
-            usuarios.removeAt(position)
-            // Notifica al adaptador que el elemento en esta posición fue eliminado
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, usuarios.size)
-        }
+        holder.btnEliminar.setOnClickListener { onDeleteClick(position) }
+        holder.btnEditar.setOnClickListener { onEditClick(usuario, position) }
     }
 
     override fun getItemCount(): Int = usuarios.size
-
-    // Método para actualizar la lista
-
 }
