@@ -13,6 +13,7 @@ import com.example.proyectoandroid.models.Usuario
 import com.example.proyectoandroid.utils.PreferencesHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +26,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Configuración del Toolbar
+        setSupportActionBar(binding.toolbar)  // Asegúrate de que tienes un Toolbar en el XML
 
         // Cargar usuarios desde SharedPreferences o inicializar con valores predeterminados
         if (PreferencesHelper.isFirstRun(this)) {
@@ -135,10 +139,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun logout() {
+        // Borrar la sesión de SharedPreferences
         PreferencesHelper.clearSession(this)
+
+        // Cerrar sesión en Firebase
+        FirebaseAuth.getInstance().signOut()
+
+        // Mostrar un mensaje de confirmación
+        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
+
+        // Redirigir al LoginActivity
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
-        finish()
+        finish()  // Finaliza MainActivity para evitar que el usuario regrese
     }
+
 }

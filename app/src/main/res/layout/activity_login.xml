@@ -7,11 +7,12 @@
     style="@style/GradientBackground"
     android:padding="@dimen/padding_large">
 
+    <!-- Título -->
     <TextView
-        android:id="@+id/textTitle"
+        android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bienvenido"
+        android:text="Iniciar Sesión"
         android:textSize="@dimen/text_size_large"
         android:textColor="@color/primaryColor"
         android:fontFamily="sans-serif-medium"
@@ -19,18 +20,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Campo de correo -->
     <EditText
         android:id="@+id/editTextUser"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Usuario"
+        android:hint="Correo Electrónico"
         android:backgroundTint="@color/primaryColor"
         android:textColor="@color/textColorPrimary"
         android:layout_marginTop="@dimen/padding_medium"
-        app:layout_constraintTop_toBottomOf="@id/textTitle"
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Campo de contraseña -->
     <EditText
         android:id="@+id/editTextPass"
         android:layout_width="0dp"
@@ -44,11 +47,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Botón de inicio de sesión -->
     <Button
         android:id="@+id/buttonValidate"
         style="@style/RoundedButton"
         android:text="Iniciar Sesión"
         app:layout_constraintTop_toBottomOf="@id/editTextPass"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+         />
+
+    <!-- Botón de registro -->
+    <Button
+        android:id="@+id/buttonRegister"
+        style="@style/RoundedButtonSecondary"
+        android:text="Registrarse"
+        app:layout_constraintTop_toBottomOf="@id/buttonValidate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+         />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

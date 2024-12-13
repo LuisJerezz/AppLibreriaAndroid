@@ -23,10 +23,30 @@
     </style>
 
 
+    <style name="RoundedButtonSecondary" >
+        <item name="android:backgroundTint">#4F598C</item>
+        <item name="android:textColor">@color/buttonTextColor</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/padding_medium</item>
+        <item name="android:padding">@dimen/padding_medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:elevation">@dimen/elevation</item>
+    </style>
+
+
+
+
     <style name="CardStyle" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">16dp</item>
         <item name="cardElevation">4dp</item>
     </style>
+
+    <style name="CustomToolbarStyle">
+        <item name="android:background">#2196F3</item> <!-- Color azul -->
+        <item name="android:titleTextColor">@android:color/white</item> <!-- Título blanco -->
+    </style>
+
 
 
 </resources>
