@@ -43,11 +43,10 @@
     </style>
 
     <style name="CustomToolbarStyle">
-        <item name="android:background">#2196F3</item> <!-- Color azul -->
-        <item name="android:titleTextColor">@android:color/white</item> <!-- Título blanco -->
-    </style
+        <item name="android:background">#2196F3</item>
+        <item name="android:titleTextColor">@android:color/white</item>
+    </style>
 
-    <!-- Estilo para el Navigation Drawer -->
     <style name="CustomDrawerStyle">
         <item name="android:background">@color/blue_dark</item>
         <item name="android:textColor">@android:color/white</item>
