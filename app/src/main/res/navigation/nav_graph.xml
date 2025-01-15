@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/nav_user_list"> <!-- Start destination apuntando al fragmento de usuarios -->
+
+    <!-- Fragmento de lista de usuarios -->
+    <fragment
+        android:id="@+id/nav_user_list"
+        android:name="com.example.proyectoandroid.UsuarioFragment"
+        android:label="Usuarios"
+        tools:layout="@layout/fragment_usuario">
+        <action
+            android:id="@+id/action_nav_user_list_to_nav_profile"
+            app:destination="@id/nav_profile" />
+        <action
+            android:id="@+id/action_nav_user_list_to_nav_ads_list"
+            app:destination="@id/nav_ads_list" />
+        <action
+            android:id="@+id/action_nav_user_list_to_nav_settings"
+            app:destination="@id/nav_settings" />
+        <action
+            android:id="@+id/action_nav_user_list_to_nav_help"
+            app:destination="@id/nav_help" />
+        <!-- Acción para navegar al fragmento de detalles del usuario -->
+        <action
+            android:id="@+id/action_nav_user_list_to_nav_user_details"
+            app:destination="@id/nav_user_details" />
+    </fragment>
+
+    <!-- Fragmento de anuncios -->
+    <fragment
+        android:id="@+id/nav_ads_list"
+        android:name="com.example.proyectoandroid.fragments.GenericAdsFragment"
+        android:label="Anuncios"
+        tools:layout="@layout/fragment_generic_ads">
+        <action
+            android:id="@+id/action_nav_ads_list_to_nav_profile"
+            app:destination="@id/nav_profile" />
+        <action
+            android:id="@+id/action_nav_ads_list_to_nav_user_list"
+            app:destination="@id/nav_user_list" />
+    </fragment>
+
+    <!-- Fragmento de perfil de usuario -->
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.proyectoandroid.fragments.ProfileFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_nav_profile_to_nav_user_list"
+            app:destination="@id/nav_user_list" />
+    </fragment>
+
+    <!-- Fragmento de ajustes -->
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.proyectoandroid.fragments.SettingsFragment"
+        android:label="Ajustes"
+        tools:layout="@layout/fragment_settings" />
+
+    <!-- Fragmento de ayuda -->
+    <fragment
+        android:id="@+id/nav_help"
+        android:name="com.example.proyectoandroid.fragments.HelpFragment"
+        android:label="Ayuda"
+        tools:layout="@layout/fragment_help" />
+
+    <!-- Fragmento de detalles del usuario -->
+    <fragment
+        android:id="@+id/nav_user_details"
+        android:name="com.example.proyectoandroid.fragments.UserDetailsFragment"
+        android:label="Detalles del Usuario"
+        tools:layout="@layout/fragment_user_details" />
+
+</navigation>

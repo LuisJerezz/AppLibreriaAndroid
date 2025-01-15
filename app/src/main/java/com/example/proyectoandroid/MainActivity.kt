@@ -1,138 +1,91 @@
 package com.example.proyectoandroid
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.proyectoandroid.adapters.UsuarioAdapter
-import com.example.proyectoandroid.databinding.ActivityMainBinding
-import com.example.proyectoandroid.models.Usuario
-import com.example.proyectoandroid.utils.PreferencesHelper
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.FirebaseAuth
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import com.example.proyectoandroid.databinding.ActivityMainDrawerBinding
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var usuarioAdapter: UsuarioAdapter
-    private val usuarios = mutableListOf<Usuario>()
-    private var currentUserId = 1 // Para generar IDs únicos automáticamente
+    private lateinit var binding: ActivityMainDrawerBinding
+    lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        // Inflar el layout que contiene el DrawerLayout y el Toolbar
+        binding = ActivityMainDrawerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Configuración del Toolbar
-        setSupportActionBar(binding.toolbar)  // Asegúrate de que tienes un Toolbar en el XML
+        // Configurar el Toolbar como ActionBar
+        setSupportActionBar(binding.toolbar)
 
-        // Cargar usuarios desde SharedPreferences o inicializar con valores predeterminados
-        if (PreferencesHelper.isFirstRun(this)) {
-            initializeDefaultUsers()
-        }
-        usuarios.addAll(PreferencesHelper.getUsuarios(this))
-        if (usuarios.isNotEmpty()) {
-            currentUserId = usuarios.maxOf { it.id } + 1
-        }
+        // Configurar Navigation Drawer
+        val drawerLayout: DrawerLayout = binding.drawerLayout
+        val navView: NavigationView = binding.navView
 
-        usuarioAdapter = UsuarioAdapter(usuarios,
-            onEditClick = { usuario, position -> showEditUserDialog(usuario, position) },
-            onDeleteClick = { position -> deleteUser(position) }
-        )
+        // Configurar NavController desde el NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
 
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = usuarioAdapter
-        }
+        // Configurar el Drawer con NavController
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+        NavigationUI.setupWithNavController(navView, navController)
 
-        binding.btnAddUser.setOnClickListener { showAddUserDialog() }
-    }
-
-    private fun initializeDefaultUsers() {
-        val defaultUsers = listOf(
-            Usuario(1, "Juan Pérez", "juan@example.com"),
-            Usuario(2, "María Gómez", "maria@example.com"),
-            Usuario(3, "Carlos López", "carlos@example.com"),
-            Usuario(4, "Ana Fernández", "ana@example.com"),
-            Usuario(5, "Pedro Sánchez", "pedro@example.com")
-        )
-        PreferencesHelper.saveUsuarios(this, defaultUsers)
-    }
-
-    private fun showAddUserDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_add_edit_user, null)
-        val inputName = dialogView.findViewById<TextInputEditText>(R.id.etUserName)
-        val inputEmail = dialogView.findViewById<TextInputEditText>(R.id.etUserEmail)
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Añadir Usuario")
-            .setView(dialogView)
-            .setPositiveButton("Guardar") { _, _ ->
-                val name = inputName.text.toString()
-                val email = inputEmail.text.toString()
-                if (name.isNotEmpty() && email.isNotEmpty()) {
-                    usuarios.add(Usuario(currentUserId++, name, email))
-                    usuarioAdapter.notifyItemInserted(usuarios.size - 1)
-                    saveUsuariosToPreferences()
-                } else {
-                    Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
+        // Escuchar la selección de los items del menú del NavigationView
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_ads_list -> {
+                    // Navegar al fragmento de anuncios
+                    navController.navigate(R.id.nav_ads_list)
+                }
+                R.id.nav_user_list -> {
+                    // Navegar al fragmento de usuarios
+                    navController.navigate(R.id.nav_user_list)
+                }
+                R.id.nav_profile -> {
+                    // Navegar al fragmento de perfil
+                    navController.navigate(R.id.nav_profile)
+                }
+                R.id.nav_settings -> {
+                    // Navegar al fragmento de ajustes
+                    navController.navigate(R.id.nav_settings)
                 }
             }
-            .setNegativeButton("Cancelar", null)
-            .show()
-    }
-
-    private fun showEditUserDialog(usuario: Usuario, position: Int) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_add_edit_user, null)
-        val inputName = dialogView.findViewById<TextInputEditText>(R.id.etUserName)
-        val inputEmail = dialogView.findViewById<TextInputEditText>(R.id.etUserEmail)
-
-        inputName.setText(usuario.nombre)
-        inputEmail.setText(usuario.email)
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Editar Usuario")
-            .setView(dialogView)
-            .setPositiveButton("Guardar") { _, _ ->
-                val name = inputName.text.toString()
-                val email = inputEmail.text.toString()
-                if (name.isNotEmpty() && email.isNotEmpty()) {
-                    usuario.nombre = name
-                    usuario.email = email
-                    usuarioAdapter.notifyItemChanged(position)
-                    saveUsuariosToPreferences()
-                } else {
-                    Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
-    }
-
-    private fun deleteUser(position: Int) {
-        usuarios.removeAt(position)
-        usuarioAdapter.notifyItemRemoved(position)
-        usuarioAdapter.notifyItemRangeChanged(position, usuarios.size)
-        saveUsuariosToPreferences()
-    }
-
-    private fun saveUsuariosToPreferences() {
-        PreferencesHelper.saveUsuarios(this, usuarios)
+            // Cerrar el Drawer después de la selección
+            drawerLayout.closeDrawers()
+            true
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Inflar el menú en la Toolbar
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Gestionar los clics en las opciones de la Toolbar
         return when (item.itemId) {
             R.id.action_logout -> {
-                logout()
+
+                true
+            }
+            R.id.action_settings -> {
+                // Navegar a ajustes
+                navController.navigate(R.id.nav_settings)
+                true
+            }
+            R.id.action_help -> {
+                // Navegar a ayuda
+                navController.navigate(R.id.nav_help) // Asegúrate de que tengas este fragmento
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -140,20 +93,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun logout() {
-        // Borrar la sesión de SharedPreferences
-        PreferencesHelper.clearSession(this)
 
-        // Cerrar sesión en Firebase
-        FirebaseAuth.getInstance().signOut()
-
-        // Mostrar un mensaje de confirmación
-        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
-
-        // Redirigir al LoginActivity
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()  // Finaliza MainActivity para evitar que el usuario regrese
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(navController, binding.drawerLayout)
     }
-
 }

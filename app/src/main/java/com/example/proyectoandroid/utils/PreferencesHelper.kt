@@ -76,10 +76,11 @@ object PreferencesHelper {
     fun clearSession(context: Context) {
         val prefs = getPreferences(context)
         val editor = prefs.edit()
-        editor.putBoolean(KEY_IS_LOGGED_IN, false) // Marca al usuario como no logueado
-        editor.remove(KEY_USER_ID)  // Elimina el ID de usuario
-        editor.remove(KEY_USER_NAME) // Elimina el nombre de usuario
-        editor.remove(KEY_USER_EMAIL) // Elimina el correo del usuario
-        editor.apply()
+        editor.putBoolean(KEY_IS_LOGGED_IN, false)  // Marca al usuario como no logueado
+        editor.remove(KEY_USER_ID)                  // Elimina el ID de usuario
+        editor.remove(KEY_USER_NAME)                // Elimina el nombre de usuario
+        editor.remove(KEY_USER_EMAIL)               // Elimina el correo del usuario
+        editor.apply()                              // Asegúrate de aplicar los cambios
     }
+
 }

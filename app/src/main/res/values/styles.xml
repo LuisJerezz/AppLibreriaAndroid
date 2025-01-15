@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar" tools:ignore="DuplicateDefinition">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryColorDark</item>
         <item name="colorAccent">@color/accentColor</item>
@@ -45,8 +45,26 @@
     <style name="CustomToolbarStyle">
         <item name="android:background">#2196F3</item> <!-- Color azul -->
         <item name="android:titleTextColor">@android:color/white</item> <!-- Título blanco -->
+    </style
+
+    <!-- Estilo para el Navigation Drawer -->
+    <style name="CustomDrawerStyle">
+        <item name="android:background">@color/blue_dark</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:divider">@color/blue_light</item>
     </style>
 
+    <!-- Estilo para los items del NavigationDrawer -->
+    <style name="CustomDrawerItemStyle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/blue</item>
+    </style>
+
+    <!-- Estilos para el encabezado del drawer -->
+    <style name="CustomDrawerHeader">
+        <item name="android:background">@color/blue_light</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 
 
 </resources>

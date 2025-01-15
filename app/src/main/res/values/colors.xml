@@ -11,5 +11,8 @@
     <color name="textColorPrimary">#212121</color>
     <color name="textColorSecondary">#757575</color>
     <color name="white">#FFFFFF</color>
+    <color name="blue">#007BFF</color> <!-- Azul principal -->
+    <color name="blue_dark">#0056b3</color> <!-- Azul oscuro -->
+    <color name="blue_light">#66aaff</color> <!-- Azul claro -->
 </resources>
 
