@@ -6,7 +6,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectoandroid.databinding.ActivityLoginBinding
-import com.example.proyectoandroid.databinding.ActivityRegisterBinding
+import com.example.proyectoandroid.ui.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {

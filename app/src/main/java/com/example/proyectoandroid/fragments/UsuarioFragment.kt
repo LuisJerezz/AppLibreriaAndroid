@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyectoandroid.adapters.UsuarioAdapter
 import com.example.proyectoandroid.databinding.FragmentUsuarioBinding
 import com.example.proyectoandroid.models.Usuario
+import com.example.proyectoandroid.ui.MainActivity
 import com.example.proyectoandroid.utils.PreferencesHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -31,7 +31,7 @@ class UsuarioFragment : Fragment() {
         binding = FragmentUsuarioBinding.inflate(inflater, container, false)
 
         // Obtener el NavController de la actividad principal
-        navController = (activity as MainActivity).navController
+        //navController = (activity as MainActivity).navController
 
         // Cargar usuarios desde SharedPreferences o inicializar con valores predeterminados
         if (PreferencesHelper.isFirstRun(requireContext())) {
