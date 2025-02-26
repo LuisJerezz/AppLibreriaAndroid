@@ -1,33 +1,40 @@
 package com.example.proyectoandroid.data.repository
 
+import android.util.Log
 import com.example.proyectoandroid.data.service.UserService
-import com.example.proyectoandroid.data.source.UserDataSource
 import com.example.proyectoandroid.domain.models.User
-import com.example.proyectoandroid.domain.models.UserData
 import com.example.proyectoandroid.domain.repository.UserRepositoryInterface
+import javax.inject.Inject
 
-class InMemoryUserRepository : UserRepositoryInterface{
-    private val service : UserService = UserService()
-
-    override suspend fun getUsers() : List<User>{
-        val mutableUsers : MutableList<User> = mutableListOf()
-        val dataSource = service.getUsers()
-        dataSource.forEach{
-            userTriple -> mutableUsers.add(
-                            User(userTriple.first, userTriple.second, userTriple.third))
-        }
-        UserData.users
-        return UserData.users
+class InMemoryUserRepository @Inject constructor(
+    private val userService: UserService
+) : UserRepositoryInterface<User> {
+    private val users = mutableListOf<User>()
+    override suspend fun getUsers(): List<User> {
+        users.clear()
+        users.addAll(userService.getUsers())
+        return users
     }
 
-    override suspend fun getUsersByUsername(username: String): List<User> {
-        val mutableUsers : MutableList<User> = mutableListOf()
-        val dataSouce = service.getUserByUsername(username)
-        dataSouce.forEach {
-            userTriple -> mutableUsers.add(
-                            User(userTriple.first, userTriple.second, userTriple.third))
-        }
-        UserData.users = mutableUsers
-        return UserData.users
+    override suspend fun delUser(id: Int): Boolean {
+        Log.d("InMemoryUserRepository", "Intentando eliminar usuario con ID: $id")
+        val result = userService.deleteUser(id)  // Llamamos directamente al servicio que trabaja con el DataSource
+        Log.d("InMemoryUserRepository", "Usuario eliminado correctamente de memoria")
+        return result
     }
+
+
+
+
+
+    override suspend fun editUser(oldUser: User, newUser: User) {
+        Log.d("InMemoryUserRepository", "Editando usuario: ${oldUser.nombre} -> ${newUser.nombre}")
+        userService.editUser(oldUser, newUser)
+    }
+
+    override suspend fun addUser(o: User) {
+        userService.addUser(o)
+    }
+
+
 }

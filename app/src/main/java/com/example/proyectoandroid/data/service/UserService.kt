@@ -1,19 +1,30 @@
 package com.example.proyectoandroid.data.service
 
+import android.util.Log
 import com.example.proyectoandroid.data.source.UserDataSource
-import kotlinx.coroutines.delay
+import com.example.proyectoandroid.domain.models.User
+
 
 class UserService {
-    suspend fun getUsers(): List<Triple<String, String, String>>{
-        delay(1000);
-        return UserDataSource.users
+    private val dataSource = UserDataSource()
+
+    suspend fun getUsers(): List<User> {
+        return dataSource.getUsers()
     }
 
-    suspend fun getUserByUsername(username: String): List<Triple<String, String, String>>{
-        delay(1000);
-        val userByName = UserDataSource.users.filter {
-            it.second.equals(username)
-        }
-        return userByName;
+    suspend fun deleteUser(id: Int): Boolean {
+        Log.d("UserService", "Eliminando usuario con ID: $id en UserService")
+        dataSource.delUser(id)
+        return true
+    }
+
+
+    suspend fun editUser(oldUser: User, newUser: User) {
+        Log.d("UserService", "Editando usuario: ${oldUser.nombre} -> ${newUser.nombre}")
+        dataSource.editUser(oldUser, newUser)
+    }
+
+    suspend fun addUser(user: User) {
+        dataSource.addUser(user)
     }
 }

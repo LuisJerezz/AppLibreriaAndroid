@@ -22,6 +22,11 @@
 
     </style>
 
+    <style name="RoundedDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:background">@drawable/dialog_background</item>
+    </style>
+
+
 
     <style name="RoundedButtonSecondary" >
         <item name="android:backgroundTint">#4F598C</item>
