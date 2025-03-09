@@ -15,5 +15,5 @@ abstract class RepoModule {
     @Singleton
     abstract fun bindUserRepository(
         repoImp: InMemoryUserRepository
-    ) : UserRepositoryInterface<User>
+    ) : UserRepositoryInterface
 }

@@ -14,5 +14,6 @@
     <color name="blue">#007BFF</color> <!-- Azul principal -->
     <color name="blue_dark">#0056b3</color> <!-- Azul oscuro -->
     <color name="blue_light">#66aaff</color> <!-- Azul claro -->
+    <color name="gray_400">#BDBDBD</color>
 </resources>
 

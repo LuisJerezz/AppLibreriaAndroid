@@ -3,37 +3,73 @@ package com.example.proyectoandroid.ui.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.proyectoandroid.R
 import com.example.proyectoandroid.databinding.ItemUsuarioBinding
 import com.example.proyectoandroid.domain.models.User
 
 
 class UserAdapter(
-    private var users: MutableList<User> = mutableListOf(),
-    private val onEditClick: (User) -> Unit,
-    private val onDeleteClick: (User) -> Unit
-) : RecyclerView.Adapter<ViewHolderUser>() {
+    private val onDeleteClick: (User) -> Unit,
+    private val onEditClick: (User) -> Unit
+) : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderUser {
-        val binding = ItemUsuarioBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolderUser(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+        val binding = ItemUsuarioBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return UserViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolderUser, position: Int) {
-        val user = users[position]
-        holder.bind(user, { userToEdit ->
-            Log.d("UserAdapter", "Llamando a onEditClick para usuario: ${userToEdit.nombre}") // 🚀 Verifica que el click llega al adapter
-            onEditClick(userToEdit)
-        }, onDeleteClick)
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = users.size
+    inner class UserViewHolder(private val binding: ItemUsuarioBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-    fun updateList(newList: List<User>) {
-        users.clear()
-        users.addAll(newList)
-        notifyDataSetChanged()
+        fun bind(user: User) {
+            binding.apply {
+                tvNombre.text = user.name ?: "Sin nombre"
+                tvEmail.text = user.email ?: "Sin email"
+                tvPhone.text = user.phone?.toString() ?: "Sin teléfono"
+                tvDni.text = user.dni ?: "Sin DNI"
+
+                // Carga de imagen mejorada
+                val imageUrl = when {
+                    user.image.isNullOrEmpty() -> R.drawable.ic_users
+                    user.image!!.startsWith("http") -> user.image
+                    else -> {
+                        val resId = root.context.resources.getIdentifier(
+                            user.image, "drawable", root.context.packageName
+                        )
+                        if (resId == 0) R.drawable.ic_users else resId
+                    }
+                }
+
+                Glide.with(root.context)
+                    .load(imageUrl)
+                    .error(R.drawable.ic_users)
+                    .into(imageUser)
+
+                btnEditar.setOnClickListener { onEditClick(user) }
+                btnEliminar.setOnClickListener { onDeleteClick(user) }
+            }
+        }
     }
 
+    class UserDiffCallback : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem.dni == newItem.dni
+        }
 
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem == newItem
+        }
+    }
 }

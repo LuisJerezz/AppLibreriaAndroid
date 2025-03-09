@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
     id("dagger.hilt.android.plugin")
     id("org.jetbrains.kotlin.kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -71,4 +72,11 @@ dependencies {
 
     // Eliminadas dependencias obsoletas de Hilt
     implementation("androidx.activity:activity-ktx:1.7.2")
+
+    // Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+    implementation ("androidx.security:security-crypto:1.1.0-alpha06")
 }

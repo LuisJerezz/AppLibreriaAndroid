@@ -1,78 +1,94 @@
 package com.example.proyectoandroid
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Patterns
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.proyectoandroid.data.AuthResponse
+import com.example.proyectoandroid.data.service.LoginRequest
+import com.example.proyectoandroid.data.service.RetrofitConnection
 import com.example.proyectoandroid.databinding.ActivityLoginBinding
 import com.example.proyectoandroid.ui.views.activity.MainActivity
-import com.google.firebase.auth.FirebaseAuth
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var auth: FirebaseAuth
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance()
+        sharedPreferences = getSharedPreferences("login-info", MODE_PRIVATE)
 
-        // Comprobar si el usuario ya está logueado
-        val currentUser = auth.currentUser
-        if (currentUser != null && currentUser.isEmailVerified) {
-            goToMainActivity()
+        // Auto-login si hay credenciales
+        val savedEmail = sharedPreferences.getString("email", null)
+        val savedPassword = sharedPreferences.getString("password", null)
+        if (savedEmail != null && savedPassword != null) {
+            binding.editTextUser.setText(savedEmail)
+            binding.editTextPass.setText(savedPassword)
+            performLogin(savedEmail, savedPassword, isAutoLogin = true)
         }
 
-        // Botón para iniciar sesión
+        binding.buttonRegister.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
+
         binding.buttonValidate.setOnClickListener {
-            val email = binding.editTextUser.text.toString()
-            val password = binding.editTextPass.text.toString()
+            val email = binding.editTextUser.text.toString().trim()
+            val password = binding.editTextPass.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Por favor, llena todos los campos", Toast.LENGTH_SHORT).show()
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(this, "Correo electrónico inválido", Toast.LENGTH_SHORT).show()
-            } else if (password.length < 6) {
-                Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
-            } else {
-                loginUser(email, password)
+                Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
             }
-        }
 
-        // Botón para ir a la pantalla de registro
-        binding.buttonRegister.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+            performLogin(email, password)
         }
     }
 
-    private fun loginUser(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    if (user != null && user.isEmailVerified) {
-                        goToMainActivity()
-                    } else {
-                        Toast.makeText(this, "Debes verificar tu correo antes de iniciar sesión", Toast.LENGTH_LONG).show()
-                        auth.signOut()
+    private fun performLogin(email: String, password: String, isAutoLogin: Boolean = false) {
+        val loginRequest = LoginRequest(email, password)
+
+        RetrofitConnection.provideApiService(this).login(loginRequest).enqueue(object : Callback<AuthResponse> {
+            override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.token?.let { token ->
+                        saveCredentials(email, password, token)
+                        Toast.makeText(this@LoginActivity, "Inicio de sesión correcto", Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
                     }
                 } else {
-                    Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Credenciales incorrectas", Toast.LENGTH_LONG).show()
+                    if (isAutoLogin) clearCredentials()
                 }
             }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
+
+            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
+                Toast.makeText(this@LoginActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
+                if (isAutoLogin) clearCredentials()
             }
+        })
     }
 
-    private fun goToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish() // Evitar volver a la pantalla de login al presionar "Atrás"
+    private fun saveCredentials(email: String, password: String, token: String) {
+        sharedPreferences.edit().apply {
+            putString("email", email)
+            putString("password", password)
+            putString("jwt_token", token)
+            apply()
+        }
+        Log.d("LoginActivity", "Credenciales guardadas")
+    }
+
+    private fun clearCredentials() {
+        sharedPreferences.edit().clear().apply()
     }
 }

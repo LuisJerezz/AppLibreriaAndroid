@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Path sin cambios -->
+    <path
+        android:fillColor="@color/primaryColor"
+        android:pathData="M4,4h3l2-3h6l2,3h3a2,2 0,0 1,2 2v12a2,2 0,0 1,-2 2H4a2,2 0,0 1,-2 -2L2,6a2,2 0,0 1,2 -2z"/>
+
+    <!-- Circle corregido: quitar el namespace android: de cx, cy y r -->
+    <circle
+        android:fillColor="@color/primaryColor"
+        cx="12"
+    cy="13"
+    r="4"/>
+</vector>

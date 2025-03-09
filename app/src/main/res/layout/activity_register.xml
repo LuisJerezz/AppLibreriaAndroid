@@ -20,22 +20,65 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Campo de correo -->
+    <!-- Campo DNI -->
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/editDni"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Correo Electrónico"
+        android:hint="DNI (8 números + letra)"
+        android:inputType="textCapCharacters|textPersonName"
         android:backgroundTint="@color/primaryColor"
         android:textColor="@color/textColorPrimary"
         android:layout_marginTop="@dimen/padding_medium"
         app:layout_constraintTop_toBottomOf="@id/textViewRegisterTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Campo de contraseña -->
+    <!-- Campo Nombre -->
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/editName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Nombre completo"
+        android:inputType="textPersonName"
+        android:backgroundTint="@color/primaryColor"
+        android:textColor="@color/textColorPrimary"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintTop_toBottomOf="@id/editDni"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Campo Email -->
+    <EditText
+        android:id="@+id/editEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Correo Electrónico"
+        android:inputType="textEmailAddress"
+        android:backgroundTint="@color/primaryColor"
+        android:textColor="@color/textColorPrimary"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintTop_toBottomOf="@id/editName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Campo Teléfono -->
+    <EditText
+        android:id="@+id/editPhone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Teléfono"
+        android:inputType="phone"
+        android:backgroundTint="@color/primaryColor"
+        android:textColor="@color/textColorPrimary"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintTop_toBottomOf="@id/editEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Campo Contraseña -->
+    <EditText
+        android:id="@+id/editPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Contraseña"
@@ -43,13 +86,13 @@
         android:backgroundTint="@color/primaryColor"
         android:textColor="@color/textColorPrimary"
         android:layout_marginTop="@dimen/padding_small"
-        app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+        app:layout_constraintTop_toBottomOf="@id/editPhone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Campo de confirmación de contraseña -->
+    <!-- Campo Confirmar Contraseña -->
     <EditText
-        android:id="@+id/editTextConfirmPassword"
+        android:id="@+id/editConfirmPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Confirmar Contraseña"
@@ -57,28 +100,28 @@
         android:backgroundTint="@color/primaryColor"
         android:textColor="@color/textColorPrimary"
         android:layout_marginTop="@dimen/padding_small"
-        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@id/editPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Botón de registro -->
+    <!-- Botón de Registro -->
     <Button
         android:id="@+id/buttonRegisterUser"
         style="@style/RoundedButton"
         android:text="Registrar"
-        app:layout_constraintTop_toBottomOf="@id/editTextConfirmPassword"
+        android:layout_marginTop="@dimen/padding_medium"
+        app:layout_constraintTop_toBottomOf="@id/editConfirmPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Botón para volver al login -->
+    <!-- Botón para Volver -->
     <Button
         android:id="@+id/buttonGoToLogin"
         style="@style/RoundedButtonSecondary"
         android:text="Volver al Login"
+        android:layout_marginTop="@dimen/padding_small"
         app:layout_constraintTop_toBottomOf="@id/buttonRegisterUser"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
